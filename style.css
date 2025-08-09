@@ -1,1 +1,29 @@
-/* style.css content placeholder */
+*{box-sizing:border-box}body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;margin:0;background:#0b0f17;color:#e9eef5}
+header{display:flex;align-items:center;justify-content:space-between;background:#101826;border-bottom:1px solid #1e2a3d;padding:10px 16px;position:sticky;top:0;z-index:20}
+.logo{font-weight:700}
+nav{display:flex;gap:8px;flex-wrap:wrap}
+nav button{background:#182235;color:#e9eef5;border:1px solid #263756;border-radius:10px;padding:8px 10px;cursor:pointer;transition:.2s}
+nav button:hover{transform:translateY(-1px);background:#1e2a44}
+.userbox{display:flex;gap:8px;align-items:center}
+.userbox button{background:#2a3d5c;border:1px solid #36527a;border-radius:10px;color:#fff;padding:6px 10px;cursor:pointer}
+main{padding:16px;max-width:1100px;margin:0 auto}
+.tab{display:none}.tab.active{display:block}
+.grid{display:grid;grid-template-columns:1fr 2fr;gap:16px}
+.card{background:#0f1421;border:1px solid #1d2a40;border-radius:16px;padding:14px}
+.card.wide{grid-column:span 1}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.card.wide{grid-column:span 1}}
+textarea{width:100%;min-height:140px;background:#0a1220;color:#f3f7ff;border:1px solid #20304d;border-radius:12px;padding:10px;resize:vertical}
+#typingText{min-height:120px;border:1px dashed #36527a;border-radius:12px;padding:10px;margin-bottom:8px;white-space:pre-wrap}
+#practiceImage{max-width:100%;border-radius:12px;border:1px solid #20304d;margin-top:10px}
+#historyTable{width:100%;border-collapse:collapse}
+#historyTable th,#historyTable td{border:1px solid #20304d;padding:6px;text-align:center;font-size:13px}
+#sparkline{height:80px;border:1px dashed #36527a;border-radius:12px;margin-bottom:8px;display:flex;align-items:center;justify-content:center}
+.hint{font-size:12px;color:#b7c1cc}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center}
+.modal .modal-content{background:#0f1421;border:1px solid #1d2a40;border-radius:16px;padding:16px;max-width:380px;width:96%}
+.hidden{display:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chips .badge{cursor:pointer;background:#1f2f4a;margin:2px;padding:2px 6px;border-radius:6px}
+#ytPlayerWrap iframe{width:100%;height:230px;border:0;border-radius:12px;margin-top:8px}
+.word.bad{background:#4d2133;border-radius:6px;padding:0 4px;margin:0 2px}
+.word.good{background:#1f3a22;border-radius:6px;padding:0 4px;margin:0 2px}

@@ -1,1 +1,233 @@
-<!-- index.html content placeholder -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Writing Booster v3.4 Lite</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">Writing Booster v3.4 Lite ✍️⚡</div>
+  <nav>
+    <button class="tab-btn" data-tab="dictation">🎧 Dictation</button>
+    <button class="tab-btn" data-tab="typing">⌨️ Typing</button>
+    <button class="tab-btn" data-tab="writing">📝 Writing</button>
+    <button class="tab-btn" data-tab="images">🖼️ Describe</button>
+    <button class="tab-btn" data-tab="spelling">🔤 Spelling</button>
+    <button class="tab-btn" data-tab="progress">📈 Progress</button>
+  </nav>
+  <div class="userbox">
+    <span id="currentUserLabel">guest</span>
+    <button id="switchUser">Sign in</button>
+  </div>
+</header>
+
+<main>
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Sign in / Create account (local)</h2>
+      <p class="hint">No server. Your data is saved in this browser only.</p>
+      <input id="usernameInput" type="text" placeholder="Enter username (e.g., ahmed)">
+      <div class="actions">
+        <button id="loginBtn">Sign in</button>
+        <button id="closeAuth">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dictation -->
+  <section id="tab-dictation" class="tab active">
+    <h2>🎧 Dictation — CEFR Library + Random TED (manual captions)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>CEFR Library</h3>
+        <label>Level:</label>
+        <select id="dictCefr">
+          <option>A1</option><option>A2</option><option>B1</option>
+          <option>B2</option><option>C1</option><option>C2</option>
+        </select>
+        <label>Variant:</label>
+        <select id="dictVariant"></select>
+        <div class="actions">
+          <button id="playCefr">▶️ Play (TTS)</button>
+          <button id="useCefr">Use for checking</button>
+        </div>
+        <hr>
+        <h3>Random TED (YouTube)</h3>
+        <div class="actions">
+          <button id="loadRandomTed">🎲 Load random TED</button>
+          <button id="randomizeStart">↩️ Random start</button>
+        </div>
+        <textarea id="tedTranscript" placeholder="Paste captions here to check accuracy…"></textarea>
+        <div class="actions">
+          <button id="useTedTranscript">Use current transcript for checking</button>
+          <button id="pickClip">🎯 Pick 15–30s clip</button>
+          <button id="playClipTTS">🔊 Play clip (TTS)</button>
+        </div>
+        <p id="clipInfo" class="hint"></p>
+        <div id="ytPlayerWrap"></div>
+      </div>
+      <div class="card wide">
+        <textarea id="dictationInput" placeholder="Type what you hear..."></textarea>
+        <div class="actions">
+          <button id="checkDictation">Check</button>
+          <button id="clearDictation">Clear</button>
+        </div>
+        <div id="dictationFeedback"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typing -->
+  <section id="tab-typing" class="tab">
+    <h2>⌨️ Typing Trainer — Level, length & time</h2>
+    <div class="grid">
+      <div class="card">
+        <label>Level:</label>
+        <select id="typeCefr">
+          <option>A1</option><option>A2</option><option>B1</option>
+          <option>B2</option><option>C1</option><option>C2</option>
+        </select>
+        <label>Length:</label>
+        <select id="typeLength">
+          <option value="short">Short</option>
+          <option value="med" selected>Medium</option>
+          <option value="long">Long</option>
+        </select>
+        <label>Time:</label>
+        <select id="typeTime">
+          <option value="30">30s</option>
+          <option value="60" selected>60s</option>
+          <option value="120">120s</option>
+        </select>
+        <div class="actions"><button id="startTypingTest">Start</button></div>
+        <p>Time: <span id="typingTime">60</span>s • WPM: <span id="wpm">0</span> • Acc: <span id="accuracy">100%</span></p>
+      </div>
+      <div class="card wide">
+        <div id="typingText"></div>
+        <textarea id="typingInput" placeholder="Type here..." disabled></textarea>
+      </div>
+    </div>
+  </section>
+
+  <!-- Writing -->
+  <section id="tab-writing" class="tab">
+    <h2>📝 Writing — 5:00 default</h2>
+    <div class="grid">
+      <div class="card">
+        <label>Prompt / Topic</label>
+        <textarea id="promptInput" placeholder="Auto prompt will appear..."></textarea>
+        <div class="chips" id="connectors"></div>
+        <div class="actions">
+          <label>Timer (min):</label>
+          <select id="writingMinutes">
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+          <button id="startTimer">▶️ Start</button>
+          <button id="resetTimer">⏹️ Reset</button>
+          <span id="timerDisplay">05:00</span>
+        </div>
+      </div>
+      <div class="card wide">
+        <textarea id="writingArea" placeholder="Start writing here..."></textarea>
+        <div class="actions">
+          <button id="finishAnalyze">✅ Finish & Analyze</button>
+          <button id="clearWriting">🧹 Clear</button>
+          <span id="wordCount">Words: 0</span>
+        </div>
+        <div id="analysis"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Images -->
+  <section id="tab-images" class="tab">
+    <h2>🖼️ Describe Image — 1:00 default</h2>
+    <div class="grid">
+      <div class="card">
+        <button id="randomImage">🎲 Random Image</button>
+        <input type="file" id="uploadImage" accept="image/*">
+        <img id="practiceImage" alt="Practice">
+        <div class="actions">
+          <button id="startImgTimer">▶️ Start 1:00</button>
+          <button id="resetImgTimer">⏹️ Reset</button>
+          <span id="imgTimerDisplay">01:00</span>
+        </div>
+      </div>
+      <div class="card wide">
+        <textarea id="imageDescription" placeholder="Describe the image in 3–5 sentences. Use connectors."></textarea>
+        <div class="actions">
+          <button id="saveImageDesc">Save & Analyze</button>
+          <button id="clearImageDesc">Clear</button>
+          <span id="imgWordCount">Words: 0</span>
+        </div>
+        <div id="imgAnalysis"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spelling -->
+  <section id="tab-spelling" class="tab">
+    <h2>🔤 Spelling Trainer (collects from all sections)</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Your Misspelled Words</h3>
+        <ul id="misspelledList"></ul>
+        <div class="actions">
+          <button id="clearMisspelled">Clear List</button>
+          <button id="exportWords">Export .txt</button>
+        </div>
+      </div>
+      <div class="card wide">
+        <h3>Practice</h3>
+        <div id="spellingPracticeBox">
+          <p id="spellingTarget">Press Start</p>
+          <input id="spellingInput" type="text" placeholder="Type the word...">
+          <div class="actions">
+            <button id="startSpelling">Start</button>
+            <button id="checkSpelling">Check</button>
+            <button id="nextSpelling">Next</button>
+          </div>
+          <p id="spellingFeedback"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress -->
+  <section id="tab-progress" class="tab">
+    <h2>📈 Progress & Scores</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Summary</h3>
+        <p>Total sessions: <span id="sumSessions">0</span></p>
+        <p>Avg WPM: <span id="sumWPM">0</span></p>
+        <p>Avg Writing Score (est.): <span id="sumScore">0</span></p>
+        <button id="exportHistory">⬇️ Export History (CSV)</button>
+      </div>
+      <div class="card wide">
+        <div id="sparkline"></div>
+        <table id="historyTable">
+          <thead>
+            <tr>
+              <th>Date</th><th>Type</th><th>Words</th><th>Miss%</th><th>TTR</th><th>Conn.</th><th>WPM</th><th>Acc%</th><th>DET</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Made for Ahmed — Data saved per user in this browser.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
