@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Writing Booster v2 — Study & Learn</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <h1>Writing Booster v2 ✍️🔥</h1>
+    <nav>
+      <button class="tab-btn" data-tab="writing">📝 Writing Practice</button>
+      <button class="tab-btn" data-tab="spelling">🔤 Spelling Trainer</button>
+      <button class="tab-btn" data-tab="typing">⌨️ Typing Speed</button>
+      <button class="tab-btn" data-tab="images">🖼️ Image Describe</button>
+      <button class="tab-btn" data-tab="progress">📈 Progress</button>
+      <button id="exportData">⬇️ Export Data</button>
+      <button id="importDataBtn">⬆️ Import Data</button>
+      <input type="file" id="importDataFile" accept="application/json" style="display:none"/>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Writing Practice -->
+    <section id="tab-writing" class="tab active">
+      <h2>📝 Writing Practice (Duolingo-style)</h2>
+      <div class="row">
+        <div class="col col-40">
+          <label>Prompt / Topic:</label>
+          <textarea id="promptInput" placeholder="Write about... (e.g., 'Describe a memorable trip you had')"></textarea>
+          <button id="loadSamplePrompt">🎲 Random Prompt</button>
+          <div class="chips" id="connectors"></div>
+        </div>
+        <div class="col col-60">
+          <div class="toolbar">
+            <button id="startTimer">▶️ 30:00</button>
+            <button id="resetTimer">⏹️ Reset</button>
+            <span id="timerDisplay">30:00</span>
+            <span id="wordCount">Words: 0</span>
+          </div>
+          <textarea id="writingArea" placeholder="Start writing here... Auto-saved."></textarea>
+          <div class="actions">
+            <button id="finishAnalyze">✅ Finish & Analyze</button>
+            <button id="clearWriting">🧹 Clear</button>
+          </div>
+          <div id="analysis"></div>
+        </div>
+      </div>
+      <p class="hint">Tip: Click any highlighted word to <b>add/remove</b> it from your Spelling list.</p>
+    </section>
+
+    <!-- Spelling Trainer -->
+    <section id="tab-spelling" class="tab">
+      <h2>🔤 Spelling Trainer (Your mistakes)</h2>
+      <div class="row">
+        <div class="col col-40">
+          <h3>Your Misspelled Words</h3>
+          <ul id="misspelledList"></ul>
+          <div class="actions">
+            <button id="clearMisspelled">Clear List</button>
+          </div>
+        </div>
+        <div class="col col-60">
+          <h3>Practice</h3>
+          <div id="spellingPracticeBox">
+            <p id="spellingTarget">Press Start to practice.</p>
+            <input id="spellingInput" type="text" placeholder="Type the word..." />
+            <div class="actions">
+              <button id="startSpelling">Start</button>
+              <button id="checkSpelling">Check</button>
+              <button id="nextSpelling">Next</button>
+            </div>
+            <p id="spellingFeedback"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typing Speed -->
+    <section id="tab-typing" class="tab">
+      <h2>⌨️ Typing Speed</h2>
+      <div class="row">
+        <div class="col col-40">
+          <h3>Passages</h3>
+          <select id="passageSelect"></select>
+          <button id="startTypingTest">Start 1 min</button>
+          <p>Time: <span id="typingTime">60</span>s</p>
+          <p>WPM: <span id="wpm">0</span> | Accuracy: <span id="accuracy">100%</span></p>
+        </div>
+        <div class="col col-60">
+          <div id="typingText"></div>
+          <textarea id="typingInput" placeholder="Type here..." disabled></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- Image Description -->
+    <section id="tab-images" class="tab">
+      <h2>🖼️ Image Description Practice</h2>
+      <div class="row">
+        <div class="col col-40">
+          <button id="randomImage">🎲 Random Image</button>
+          <input type="file" id="uploadImage" accept="image/*"/>
+          <p class="hint">You can upload an image or get a random one.</p>
+          <img id="practiceImage" alt="Practice" />
+        </div>
+        <div class="col col-60">
+          <div class="toolbar">
+            <button id="startImgTimer">▶️ 02:00</button>
+            <button id="resetImgTimer">⏹️ Reset</button>
+            <span id="imgTimerDisplay">02:00</span>
+            <span id="imgWordCount">Words: 0</span>
+          </div>
+          <textarea id="imageDescription" placeholder="Describe the image in English..."></textarea>
+          <div class="actions">
+            <button id="saveImageDesc">Save Description</button>
+            <button id="clearImageDesc">Clear</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress & Scores -->
+    <section id="tab-progress" class="tab">
+      <h2>📈 Progress & Scores</h2>
+      <div class="row">
+        <div class="col col-40">
+          <h3>Summary</h3>
+          <div id="summaryStats">
+            <p>Total sessions: <span id="sumSessions">0</span></p>
+            <p>Avg WPM: <span id="sumWPM">0</span></p>
+            <p>Avg Writing Score (est.): <span id="sumScore">0</span></p>
+          </div>
+          <h3>Export History</h3>
+          <button id="exportHistory">⬇️ Export History (CSV)</button>
+        </div>
+        <div class="col col-60">
+          <h3>History</h3>
+          <div id="sparkline"></div>
+          <table id="historyTable">
+            <thead>
+              <tr>
+                <th>Date</th><th>Words</th><th>Miss%</th><th>TTR</th><th>Connectors</th><th>WPM</th><th>Acc%</th><th>DET Writing (est.)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <p class="hint">Note: DET score here is an <b>estimate</b> based on your text length, lexical diversity, connectors, and mistakes. It’s not official.</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>Made for Ahmed — Study & Learn. Data saved locally.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
